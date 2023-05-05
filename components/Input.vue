@@ -6,6 +6,7 @@
       :placeholder="placeholder"
       class="
         block
+        w-full
         rounded-md
         border-0
         py-1.5

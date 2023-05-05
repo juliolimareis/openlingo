@@ -1,120 +1,136 @@
 <template>
-  <div
-    class="bgimg text-white bg-black border-2 border-red-500"
-  >
-    <img
-      class="w-full h-full"
-      src="~assets/images/cover.jpg"
-      alt="cover"
-    >
+  <div class="bg-white">
 
-    <div class="topleft text-white" />
-
-    <div class="middle">
-      <h1 class="font-bold">
-        COMING SOON
-      </h1>
-
-      <hr>
-
-      <p
-        class="font-bold text-3xl"
-      >
-        {{ countDown }}
-      </p>
-
-      <Button
-        class="m-3 bg-green-500"
-        @click="useRouter().push('/components')"
-      >
-        Components
-      </Button>
-
-      <p class="font-bold mt-4" />
-    </div>
-    <div class="bottomleft" />
+    <header class="absolute inset-x-0 top-0 z-50">
+      <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <div class="flex lg:flex-1">
+          <a href="#" class="-m-1.5 p-1.5">
+            <span class="sr-only">Your Company</span>
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+          </a>
+        </div>
+        <div class="flex lg:hidden">
+          <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">
+            <span class="sr-only">Open main menu</span>
+            <Bars3Icon class="h-6 w-6" aria-hidden="true" />
+          </button>
+        </div>
+        <div class="hidden lg:flex lg:gap-x-12">
+          <a v-for="item in navigation" :key="item.name" :href="item.href" class="text-sm font-semibold leading-6 text-gray-900">{{ item.name }}</a>
+        </div>
+        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+          <a href="/login" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </nav>
+      <Dialog as="div" class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
+        <div class="fixed inset-0 z-50" />
+        <DialogPanel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div class="flex items-center justify-between">
+            <a href="#" class="-m-1.5 p-1.5">
+              <span class="sr-only">Your Company</span>
+              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+            </a>
+            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
+              <span class="sr-only">Close menu</span>
+              <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+          <div class="mt-6 flow-root">
+            <div class="-my-6 divide-y divide-gray-500/10">
+              <div class="space-y-2 py-6">
+                <a v-for="item in navigation" :key="item.name" :href="item.href" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ item.name }}</a>
+              </div>
+              <div class="py-6">
+                <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>
+              </div>
+            </div>
+          </div>
+        </DialogPanel>
+      </Dialog>
+    </header>
+    <main>
+      <div class="relative isolate">
+        <svg class="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]" aria-hidden="true">
+          <defs>
+            <pattern id="1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+              <path d="M.5 200V.5H200" fill="none" />
+            </pattern>
+          </defs>
+          <svg x="50%" y="-1" class="overflow-visible fill-gray-50">
+            <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" stroke-width="0" />
+          </svg>
+          <rect width="100%" height="100%" stroke-width="0" fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" />
+        </svg>
+        <div class="absolute left-1/2 right-0 top-0 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl lg:ml-24 xl:ml-48" aria-hidden="true">
+          <div class="aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30" style="clip-path: polygon(63.1% 29.5%, 100% 17.1%, 76.6% 3%, 48.4% 0%, 44.6% 4.7%, 54.5% 25.3%, 59.8% 49%, 55.2% 57.8%, 44.4% 57.2%, 27.8% 47.9%, 35.1% 81.5%, 0% 97.7%, 39.2% 100%, 35.2% 81.4%, 97.2% 52.8%, 63.1% 29.5%)" />
+        </div>
+        <div class="overflow-hidden">
+          <div class="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
+            <div class="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
+              <div class="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Domine um novo idioma com nosso aplicativo de estudo de línguas divertido e interativo</h1>
+                <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">Bem-vindo ao Openlingo, a ferramenta ideal para quem quer aprender uma nova língua ou aprimorar suas habilidades existentes! Com nossa plataforma interativa, você pode aprender idiomas de uma maneira fácil e divertida.</p>
+                <div class="mt-10 flex items-center gap-x-6">
+                  <a href="#" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get started</a>
+                  <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Live demo <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+              <div class="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
+                <!-- <div class="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
+                  <div class="relative">
+                    <img src="https://w0.peakpx.com/wallpaper/680/697/HD-wallpaper-japan-flag.jpg" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg" />
+                    <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                  </div>
+                </div> -->
+                <div class="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
+                  <div class="relative">
+                    <img src="~/assets/images/folders/usa-flag.jpg" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg" />
+                    <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                  </div>
+                  <div class="relative">
+                    <img src="~/assets/images/folders/japan-flag.jpg" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg" />
+                    <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                  </div>
+                </div>
+                <div class="w-44 flex-none space-y-8 pt-32 sm:pt-0">
+                  <div class="relative">
+                    <img src="~/assets/images/folders/spanish-flag.jpg" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg" />
+                    <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                  </div>
+                  <div class="relative">
+                    <img src="~/assets/images/folders/brasil-flag.jpg" alt="" class="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg" />
+                    <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
-<script lang="ts" setup>
-// Set the date we're counting down to
-const countDownDate = new Date("Aug 28, 2023 15:37:25").getTime();
-const countDown = ref("35 days");
+<script setup>
+import { ref, } from "vue";
+import { Dialog, DialogPanel, } from "@headlessui/vue";
+import { Bars3Icon, XMarkIcon, } from "@heroicons/vue/24/outline";
 
-// Update the count down every 1 second
-const interval = setInterval(() => {
-  // Get todays date and time
-  const now = new Date().getTime();
+const { locale, t } = useI18n();
 
-  // Find the distance between now an the count down date
-  const distance = countDownDate - now;
+const navigation = [
+  { name: "Create account", href: "#" },
+  { name: "Features", href: "#" },
+  { name: "Marketplace", href: "#" },
+  { name: t("team"), href: "#" },
+];
 
-  // Time calculations for days, hours, minutes and seconds
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+const mobileMenuOpen = ref(false);
 
-  // Display the result in an element with id="demo"
-  countDown.value = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
+onMounted(() => {
+  locale.value = navigator.language;
 
-  // If the count down is finished, write some text
-  if (distance < 0) {
-    clearInterval(interval);
-    countDown.value = "EXPIRED";
-  }
-}, 1000);
+  console.log(t("team"));
+});
 
 </script>
-
-<style scoped>
-
-.bgimg {
-  /* Background image */
-  /* background-image: url('https://www.w3schools.com/w3images/forestbridge.jpg'); */
-  /* Full-screen */
-  /* height: 100%; */
-  /* Center the background image */
-  /* background-position: center; */
-  /* Scale and zoom in the image */
-  /* background-size: cover; */
-  /* Add position: relative to enable absolutely positioned elements inside the image (place text) */
-  /* position: relative; */
-  /* Add a white text color to all elements inside the .bgimg container */
-  /* color: black; */
-  /* Add a font */
-  font-family: "Courier New", Courier, monospace;
-  /* Set the font-size to 25 pixels */
-  font-size: 25px;
-}
-
-/* Position text in the top-left corner */
-.topleft {
-  position: absolute;
-  top: 0;
-  left: 16px;
-}
-
-/* Position text in the bottom-left corner */
-.bottomleft {
-  position: absolute;
-  bottom: 0;
-  left: 16px;
-}
-
-/* Position text in the middle */
-.middle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-/* Style the <hr> element */
-hr {
-  margin: auto;
-  width: 40%;
-}
-</style>
