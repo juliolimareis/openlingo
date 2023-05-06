@@ -137,7 +137,7 @@ import { BeakerIcon, CursorArrowRaysIcon, PencilSquareIcon, ArrowPathIcon, Acade
 
 const route = useRoute();
 const router = useRouter();
-const api = useApi();
+// const api = useApi();
 
 type Options = "buttons" | "inputs" | "loader" | "text" | "modal" | "icons" | "table";
 
@@ -151,10 +151,10 @@ const isOpenDialog = ref(false);
 const switchText = ref<"Off" | "On">("Off");
 
 onMounted(() => {
-  api.get("/music")
-    .then(res => {
-      console.log(res.data);
-    });
+  // api.get("/music")
+  //   .then(res => {
+  //     console.log(res.data);
+  //   });
 
   const { option } = route.query as Record<string, Options>;
 

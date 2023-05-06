@@ -6,6 +6,10 @@ export default defineEventHandler(async (event) => {
   const data = await readBody(event);
 
   return validateBody(new User(data)).then(async () => {
-    return await prisma.user.create({ data });
+    return await prisma.user.create({ data })
+      .then(user => ({
+        user,
+        token: "testToken"
+      }));
   }).catch(err => err);
 });

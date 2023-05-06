@@ -1,20 +1,49 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model user {
-  id        Int       @id @default(autoincrement())
-  name      String
-  email     String
-  passwd    String
-  birthday  DateTime?
-  createdAt DateTime  @default(now())
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String       @unique
+  passwd     String
+  birthday   DateTime?
+  createdAt  DateTime     @default(now())
+  userLesson userLesson[]
+}
+
+model lesson {
+  id         Int       @id @default(autoincrement())
+  lang       String       @db.VarChar(2)
+  userId     Int?
+  userLesson userLesson[]
+
+  @@index([userId], map: "lesson_FK")
+}
+
+model userLesson {
+  id       Int  @id @default(autoincrement())
+  userId   Int?
+  lessonId Int?
+  user     user?   @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "userLesson_FK")
+  lesson   lesson? @relation(fields: [lessonId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "userLesson_FK_1")
+
+  @@index([userId], map: "userLesson_FK")
+  @@index([lessonId], map: "userLesson_FK_1")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model UnitLesson {
+  id      Int @id @default(autoincrement())
+  unit    Int
+  primary Int?
+}
+
+model UnitPrimary {
+  id Int @id @default(autoincrement())
 }

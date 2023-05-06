@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, } from "class-validator";
-import { SQL, } from "./sql.dto";
+// import { SQL, } from "./sql.dto";
 
 export class User /*extends SQL*/ {
   constructor(obj?: any){

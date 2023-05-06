@@ -14,6 +14,8 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({ middleware: ["auth"] });
+
 import { SpeakerWaveIcon, TruckIcon, } from "@heroicons/vue/24/solid";
 
 const player = ref();
@@ -43,6 +45,6 @@ function playAudio(backRate?: number){
 onMounted(() => {
   onYouTubeIframeAPIReady();
 
-  fetch("/api/v1/user", { method: "POST" }).then(res => console.log(res));
+  // fetch("/api/v1/user", { method: "POST" }).then(res => console.log(res));
 });
 </script>
