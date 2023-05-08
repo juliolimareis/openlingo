@@ -18,7 +18,7 @@
         placeholder:text-gray-400
         focus:ring-2
         focus:ring-inset
-        focus:ring-primary
+        focus:ring-primary-600
         sm:text-sm
         sm:leading-6
         ${isError && 'border-2 focus:ring-red-500 border-red-500 focus:border-red-500'}
