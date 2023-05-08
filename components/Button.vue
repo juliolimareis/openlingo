@@ -1,5 +1,7 @@
 <template>
-  <button
+  <Loader class="m-auto" v-if="isLoading" :size="loadingSize"/>
+
+  <button v-else
     :class="`
       m-1
       px-3
@@ -8,16 +10,17 @@
       shadow-sm
       rounded-md
       font-semibold
-      -hover:bg-indigo-500
+      hover:bg-primary-500
       focus-visible:outline
       focus-visible:outline-2
       focus-visible:outline-offset-2
       items-center gap-x-2
-      ${hasIcon && 'inline-flex'}
-      -focus-visible:outline-indigo-600
-      ${!secondary && 'bg-primary text-white'}
-      ${secondary && 'text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'}
-      ${params}`
+      focus-visible:outline-primary-600
+      ${hasIcon ? 'inline-flex' : ''}
+      ${isWidthFull ? 'w-full' : ''}
+      ${!secondary ? 'bg-primary-600 text-white' : ''}
+      ${secondary ? 'text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50' : ''}
+      ${params()}`
     "
     :disabled="disabled"
   >
@@ -28,25 +31,21 @@
 <script lang="ts" setup>
 import { defineProps, } from "vue";
 
-const props = defineProps({
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  secondary: {
-    type: Boolean,
-    default: false
-  },
-  hasIcon: {
-    type: Boolean,
-    default: false
-  }
-});
+const props = defineProps<{
+  disabled?: boolean;
+  secondary?: boolean;
+  hasIcon?: boolean;
+  isLoading?: boolean;
+  isWidthFull?: boolean;
+  loadingSize?: "sm" | "md" | "lg";
+}>();
 
 const params = () => {
   if(props.disabled){
     return "disabled:opacity-50";
   }
+
+  return "";
 };
 
 </script>
