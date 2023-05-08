@@ -150,7 +150,8 @@
 
       <main class="py-10">
         <div class="px-4 sm:px-6 lg:px-8">
-          <!-- Your content -->
+          <!-- Content -->
+          <NuxtPage/>
         </div>
       </main>
     </div>
@@ -191,8 +192,8 @@ onMounted(() => {
 });
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
+  { name: "Lesson", href: "/home/lesson", icon: HomeIcon, current: true },
+  { name: "Team", href: "/home/team", icon: UsersIcon, current: false },
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
   { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
   { name: "Documents", href: "#", icon: DocumentDuplicateIcon, current: false },
