@@ -21,6 +21,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    apiPublicRouters: { "/api/v1/auth": ["post"], "/api/v1/user":["post"] },
     public: {
       publicPages: ["", "/", "/login", "/register"],
       // api: process.env.API_MAIN,
