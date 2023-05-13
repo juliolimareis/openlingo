@@ -2,10 +2,10 @@
   <Container>
     <div class="flex">
       <div @click="playAudio()" class="mr-6">
-        <SpeakerWaveIcon class="w-24 text-primary" />
+        <SpeakerWaveIcon class="w-24 text-primary-500" />
       </div>
       <div @click="playAudio(0.5)">
-        <TruckIcon class="w-14 mt-5 text-primary" />
+        <TruckIcon class="w-14 mt-5 text-primary-500" />
       </div>
     </div>
 
