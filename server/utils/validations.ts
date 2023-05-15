@@ -34,14 +34,18 @@ export function getDataTokenInHeader(event: any){
 }
 
 export function isPublicRouter(event: any){
-  const apiPublicRouters = useRuntimeConfig().apiPublicRouters as any;
-  const pathName = Object.keys(apiPublicRouters).find(k => k === event.path);
+  if(event.path.includes("/api/")){
+    const apiPublicRouters = useRuntimeConfig().apiPublicRouters as any;
+    const pathName = Object.keys(apiPublicRouters).find(k => k === event.path);
 
-  if (pathName){
-    return !!apiPublicRouters[pathName].includes(event?.node?.req?.method?.toLowerCase() ?? "");
+    if (pathName){
+      return !!apiPublicRouters[pathName].includes(event?.node?.req?.method?.toLowerCase() ?? "");
+    }
+
+    return false;
   }
 
-  return false;
+  return true;
 }
 
 export function handleSecurityRouter(event: any){
