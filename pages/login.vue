@@ -2,44 +2,116 @@
   <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
-      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">{{ t("Sign in to your account") }}</h2>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6" action="#" method="POST">
-        <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-          <div class="mt-2">
-            <input id="email" name="email" type="email" autocomplete="email" required="" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-          </div>
+      <div class="space-y-6">
+        <div class="mt-2">
+          <Input
+            type="text"
+            :label="'Email'"
+            :value="formData.email"
+            :on-change="(value: string) => formData.email = value"
+            :on-blur="() => v$.email.$touch()"
+            :is-error="v$.email.$error"
+            :show-helper-text="v$.email.$error"
+            :helper-text="v$.email.required.$message"
+          />
         </div>
 
-        <div>
-          <div class="flex items-center justify-between">
-            <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
-            <div class="text-sm">
-              <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
-            </div>
-          </div>
-          <div class="mt-2">
-            <input id="password" name="password" type="password" autocomplete="current-password" required="" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-          </div>
+        <div class="mt-2">
+          <Input
+            type="password"
+            :label="t('Password')"
+            :value="formData.passwd"
+            :on-change="(value: string) => formData.passwd = value"
+            :on-blur="() => v$.passwd.$touch()"
+            :is-error="v$.passwd.$error"
+            :show-helper-text="v$.passwd.$error"
+            :helper-text="v$.passwd.required.$message"
+          />
         </div>
 
+        <p v-if="statusResponse > 0" class="mt-10 text-center text-sm text-gray-600 bg-red-100 rounded-sm p-4 transform">
+          {{ t("Forgot your password?") }}
+          {{ ' ' }}
+          <NuxtLink href="#" class="font-semibold leading-6 text-primary-500">{{ t('Recovery password') }}</NuxtLink>
+        </p>
+
+        <p v-else-if="!statusResponse" class="mt-10 text-center text-sm text-gray-600 bg-red-100 rounded-sm p-4 transform">
+          {{ t("Unable to login") }}{{ '.' }}
+          {{ ' ' }}
+          {{ t("is your connection working?") }}
+        </p>
+
         <div>
-          <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+          <Button @click="onSend"
+            :is-loading="isLoading"
+            loading-size="md"
+            is-width-full
+          >
+            {{ t("Sign In") }}
+          </Button>
         </div>
-      </form>
+      </div>
 
       <p class="mt-10 text-center text-sm text-gray-500">
-        Not a member?
+        {{ t("Not a member?") }}
         {{ ' ' }}
-        <a href="/register" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Create Account</a>
+        <NuxtLink href="/register" class="font-semibold leading-6 text-primary-500 hover:text-primary-500">{{ t('Create Account') }}</NuxtLink>
       </p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import useVuelidate from "@vuelidate/core";
+import { email, helpers, required, minLength, } from "@vuelidate/validators";
+
 definePageMeta({ middleware: ["auth"] });
+const { t } = useI18n();
+const { auth } = useUser();
+const { setToken } = useAuth();
+
+const statusResponse = ref(-1);
+const isLoading = ref(false);
+
+const formData = reactive({
+  email: "",
+  passwd: ""
+});
+
+const rules = computed(() => ({
+  email: {
+    required: helpers.withMessage(t("Invalid email"), required),
+    email: { email }
+  },
+  passwd: {
+    required: helpers.withMessage(t("The password must contain at least 6 characters"), required),
+    minLength: minLength(6),
+  }
+}));
+
+const v$ = useVuelidate(rules, formData);
+
+function onSend(){
+  v$.value.$validate();
+
+  if (v$.value.$error) return;
+
+  isLoading.value = true;
+
+  auth(formData)
+    .then((res) => {
+      setToken(res.data.token);
+      navigateTo("/home", { replace: true });
+    })
+    .catch((err) => {
+      statusResponse.value = err?.response?.status ?? 0;
+    }).finally(() => {
+      isLoading.value = false;
+    });
+}
+
 </script>
