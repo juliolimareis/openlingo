@@ -13,6 +13,10 @@ export function setStatus(event: any, code: number, err: object){
   return err;
 }
 
+export function userSession(event: any){
+  return event.dataToken as DataToken;
+}
+
 export function getDataTokenInHeader(event: any){
   const headerAuth = event.node.req.headers.authorization as string;
 
