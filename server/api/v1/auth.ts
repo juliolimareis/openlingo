@@ -1,7 +1,6 @@
 import Md5 from "md5";
-import useJWT from "~/server/core/jwt";
+import { useJWT, } from "~/server/utils/jwt";
 import { UserLoginDTO, } from "./../../dtos/user.Login";
-import { validateClass, basicUseSelectForToken, setStatus, } from "~/server/utils/validations";
 
 export default defineEventHandler(async (event) => {
   const { generateToken } = useJWT();

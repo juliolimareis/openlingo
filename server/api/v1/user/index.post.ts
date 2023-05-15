@@ -1,7 +1,7 @@
 import Md5 from "md5";
-import useJWT from "~/server/core/jwt";
 import prisma from "~/server/database/prisma";
 import { UserDTO, } from "~/server/dtos/user.dto";
+import { useJWT, } from "~/server/utils/jwt";
 import { validateClass, basicUseSelectForToken, setStatus, } from "~/server/utils/validations";
 
 export default defineEventHandler(async (event) => {
