@@ -5,7 +5,7 @@ export const useUser = () => {
   const api = useApi();
 
   function auth(userLogin: UserLoginDTO){
-    return api.post<{token: string}>("/auth", userLogin);
+    return api.post<{token: string, user: User}>("/auth", userLogin);
   }
 
   function dispatch(user: User){

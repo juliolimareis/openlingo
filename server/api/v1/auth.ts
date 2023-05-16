@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
       return db.user.findFirst({ where: body, select: basicUseSelectForToken })
         .then(user => {
           if(user){
-            return { token: generateToken(user) };
+            return { token: generateToken(user), user };
           }
 
           return setStatus(event, 401, { message: "invalid credentials", pass: body.passwd });
