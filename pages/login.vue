@@ -66,13 +66,14 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({ middleware: ["auth"] });
+
 import useVuelidate from "@vuelidate/core";
 import { email, helpers, required, minLength, } from "@vuelidate/validators";
 
-definePageMeta({ middleware: ["auth"] });
 const { t } = useI18n();
 const { auth } = useUser();
-const { setToken } = useAuth();
+const { setUser, setToken } = useUserStore();
 
 const statusResponse = ref(-1);
 const isLoading = ref(false);
@@ -103,8 +104,9 @@ function onSend(){
   isLoading.value = true;
 
   auth(formData)
-    .then((res) => {
-      setToken(res.data.token);
+    .then(({ data: { token, user } }) => {
+      setToken(token);
+      setUser(user);
       navigateTo("/home", { replace: true });
     })
     .catch((err) => {
