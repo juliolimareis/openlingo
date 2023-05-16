@@ -5,7 +5,7 @@ export function useAuth(){
 
   const setToken = (token: string) => localStorage.setItem("token", token);
 
-  const logout = () => localStorage.removeItem("token");
+  const removeToken = () => localStorage.removeItem("token");
 
-  return { isLogin, getToken, setToken, logout };
+  return { isLogin, getToken, setToken, removeToken };
 }
