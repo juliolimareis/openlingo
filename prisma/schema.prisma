@@ -8,26 +8,38 @@ datasource db {
 }
 
 model user {
-  id         Int       @id @default(autoincrement())
+  id         Int          @id @default(autoincrement())
   name       String
   email      String       @unique
   passwd     String
-  birthday   DateTime?
+  birthday   DateTime?    @db.Date
   createdAt  DateTime     @default(now())
   userLesson userLesson[]
 }
 
 model lesson {
-  id         Int       @id @default(autoincrement())
-  lang       String       @db.VarChar(2)
-  userId     Int?
-  userLesson userLesson[]
+  id                                     Int          @id @default(autoincrement())
+  langId                                 Int
+  createUserId                           Int?
+  isShare                                Int?
+  createdAt                              DateTime?    @default(now()) @db.Timestamp(0)
+  desc                                   String?      @db.VarChar(500)
+  title                                  String?      @db.VarChar(29)
+  nativeLangId                           Int
+  interactions                           String       @db.Text
+  urlCover                               String?      @db.VarChar(500)
+  tag                                    String?      @db.VarChar(500)
+  language_lesson_langIdTolanguage       language     @relation("lesson_langIdTolanguage", fields: [langId], references: [id], onUpdate: Restrict, map: "lesson_lang_FK")
+  language_lesson_nativeLangIdTolanguage language     @relation("lesson_nativeLangIdTolanguage", fields: [nativeLangId], references: [id], onUpdate: Restrict, map: "lesson_nativeLang_FK")
+  userLesson                             userLesson[]
 
-  @@index([userId], map: "lesson_FK")
+  @@index([createUserId], map: "lesson_FK")
+  @@index([langId], map: "lesson_FK_language_lesson")
+  @@index([nativeLangId], map: "lesson_FK_native_id")
 }
 
 model userLesson {
-  id       Int  @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   userId   Int?
   lessonId Int?
   user     user?   @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "userLesson_FK")
@@ -37,13 +49,10 @@ model userLesson {
   @@index([lessonId], map: "userLesson_FK_1")
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model UnitLesson {
-  id      Int @id @default(autoincrement())
-  unit    Int
-  primary Int?
-}
-
-model UnitPrimary {
-  id Int @id @default(autoincrement())
+model language {
+  id                                   Int      @id @default(autoincrement())
+  lang                                 String   @db.VarChar(10)
+  desc                                 String?  @db.VarChar(500)
+  lesson_lesson_langIdTolanguage       lesson[] @relation("lesson_langIdTolanguage")
+  lesson_lesson_nativeLangIdTolanguage lesson[] @relation("lesson_nativeLangIdTolanguage")
 }

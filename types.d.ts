@@ -18,16 +18,18 @@ declare global {
     desc: string
     title: string
     interactions: Interaction[]
+    tag: string // travel, winter, ...
+    urlCover: string
   }
 
   interface Interaction {
-    phrase: string
-    translation: string
+    phrase: string[]
+    translation: string[]
     urlImage: string
     videoId: string
     vInit: number
     vEnd: number
-    about: string
+    about: string,
   }
 
   interface DataToken {
@@ -42,6 +44,18 @@ declare global {
 
   interface ApiEvent extends H3Event {
     dataToken: DataToken
+  }
+
+  interface PlayVideo {
+    videoId: string,
+    startSeconds: number,
+    endSeconds: number,
+    playbackRate?: 1 | 0.5 | 1.5
+  }
+
+  interface Word {
+    id: number;
+    word: string;
   }
 
 }
