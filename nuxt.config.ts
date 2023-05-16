@@ -32,8 +32,23 @@ export default defineNuxtConfig({
 
   modules:[
     "@nuxtjs/tailwindcss",
-    "@nuxtjs/i18n"
+    "@nuxtjs/i18n",
+    "@pinia/nuxt"
     // "@nuxtjs/abifa-ui"
   ],
+
+  // pinia: {
+  //   autoImports: [
+  //     // automatically imports `defineStore`
+  //     "defineStore", // import { defineStore } from 'pinia'
+  //     ["defineStore", "definePiniaStore"], // import { defineStore as definePiniaStore } from 'pinia'
+  //   ],
+  // },
+
+  components: [
+    "components",
+    "components/icons",
+    "components/system"
+  ]
 
 });
