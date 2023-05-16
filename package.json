@@ -54,7 +54,8 @@
     "md5": "^2.3.0",
     "pinia": "^2.0.36",
     "pinia-plugin-persistedstate": "^3.1.0",
-    "pinia-shared-state": "^0.3.0"
+    "pinia-shared-state": "^0.3.0",
+    "uuid": "^9.0.0"
   },
   "overrides": {
     "vue": "latest"
