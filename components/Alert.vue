@@ -1,16 +1,16 @@
 <template>
   <div :class="`${bg100} border-t-4 ${border500} rounded-b ${text900} px-4 py-3 shadow-md`" role="alert">
     <div class="flex">
-      <div :class="`py-1 ${text500}`">
+      <div :class="`-py-1 ${text500}`">
         <ExclamationCircleIcon class="w-6 h-6 mr-4" v-if="type === 'error'" />
         <ExclamationTriangleIcon class="w-6 h-6 mr-4" v-else-if="type === 'warning'"/>
         <CheckCircleIcon class="w-6 h-6 mr-4" v-else />
       </div>
       <div>
         <p class="font-bold">{{ title }}</p>
-        <div class="text-sm"><slot/></div>
       </div>
     </div>
+    <div class="text-sm"><slot/></div>
   </div>
 </template>
 
