@@ -7,3 +7,10 @@ export const capitalizeFirstLetter = (str: string) =>
     return l;
   }).join(" ");
 
+export function shuffleArray<T = any>(arr: Array<T>){
+  return arr.map(v => ({ v, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ v }) => v);
+}
+
+export const randomInt = (max: number) => Math.floor(Math.random() * max);
