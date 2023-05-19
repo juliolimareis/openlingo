@@ -166,14 +166,13 @@ function handleInteractionType(){
 
   interactions.value.forEach(interaction => {
     player.addVideoId(interaction?.videoId ?? "");
-    // type = types[randomInt(types.length)];
+    type = types[randomInt(types.length)];
     interaction.phrases.map(p => p.split(" ").forEach(w => allPhrasesSplit.value.push(w)));
     interaction.translations.map(p => p.split(" ").forEach(w => allTranslationsSplit.value.push(w)));
 
     //randomiza onde vai aparecer a tradução.
     // isInverse = a tradução vai aparecer acima.
-    if(1){
-    // if(randomInt(2)){
+    if(randomInt(2)){
       phrase = interaction.phrases[randomInt(interaction.phrases.length)];
       translation = interaction.phrases[randomInt(interaction.translations.length)];
       isInverse = false;
