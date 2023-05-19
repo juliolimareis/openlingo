@@ -23,8 +23,8 @@ declare global {
   }
 
   interface Interaction {
-    phrase: string[]
-    translation: string[]
+    phrases: string[]
+    translations: string[]
     urlImage: string
     videoId: string
     vInit: number
@@ -56,6 +56,23 @@ declare global {
   interface Word {
     id: number;
     word: string;
+  }
+
+  interface LessonScore {
+    hits: number;
+    errors: number;
+    // time: number;
+  }
+
+  //dados do tipo de lesson
+  interface InteractionType {
+    type: "audio" | "learn" | "learn-audio";
+    interaction: Interaction;
+    isHit: boolean;
+    phrase: string;
+    translation: string;
+    isInverse: boolean;
+    isAcceleratedAudio: boolean;
   }
 
 }

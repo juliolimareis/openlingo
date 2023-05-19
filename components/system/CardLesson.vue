@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-const { setLesson, clearLessons } = useUserStore();
+const { setLesson } = useUserStore();
 
 const props = defineProps<{
   lesson: Lesson;
@@ -58,7 +58,6 @@ const props = defineProps<{
 const tags = ref<string[]>([]);
 
 function startLesson(){
-  clearLessons();
   setLesson(props.lesson);
   navigateTo("/lesson");
 }
