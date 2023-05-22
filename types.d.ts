@@ -19,7 +19,8 @@ declare global {
     title: string
     interactions: Interaction[]
     tag: string // travel, winter, ...
-    urlCover: string
+    urlCover: string;
+    langId: number
   }
 
   interface Interaction {
@@ -73,6 +74,8 @@ declare global {
     translation: string;
     isInverse: boolean;
     isAcceleratedAudio: boolean;
+    videoIndex?: number;
+    answer?: string;
   }
 
 }
