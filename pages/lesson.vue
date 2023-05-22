@@ -2,6 +2,15 @@
   <div class="overflow-x-hidden">
     <ProgressBar :progress="progress"/>
 
+    <div class="text-left pt-2 ml-3">
+      <button class="text-gray-700"
+        @click="backToHome"
+        title="Leave the lesson"
+      >
+        <XMarkIcon class="h-7 w-7 text-gray-500 hover:text-red-500 transition-all duration-500" aria-hidden="true" />
+      </button>
+    </div>
+
     <Container>
 
       <!-- <component v-if="interactions.length" :is="lessonComponent" :interactions="interactions"/> -->
@@ -17,21 +26,27 @@
             @click="addOrRemoveWordLine(w)"
           />
         </div>
+
         <hr />
+
         <div class="flex justify-start">
           <Word class="invisible" word="f" />
         </div>
+
         <hr />
       </div>
 
       <!-- Options -->
 
-      <div class="flex justify-center mt-3">
-        <Word
-          v-for="w in wordsOptions"
-          :word="w.word"
-          @click="addOrRemoveWordLine(w)"
-        />
+      <div class="mt-3">
+        <div class="m-auto min-h-[50px]" :style="{ maxWidth: '800px' }">
+          <Word
+            v-for="w in wordsOptions"
+            class="ml-2 float-left"
+            :word="w.word"
+            @click="addOrRemoveWordLine(w)"
+          />
+        </div>
       </div>
 
       <Alert
@@ -61,6 +76,8 @@
 <script lang="ts" setup>
 definePageMeta({ middleware: ["auth"] });
 
+import { XMarkIcon, } from "@heroicons/vue/24/outline";
+
 const { $state } = useUserStore();
 const player = usePlayerStore();
 const score = useScoreStore();
@@ -89,6 +106,10 @@ function addOrRemoveWordLine(word: Word){
     wordsOptions.value = wordsOptions.value.filter(wl => wl.id !== word.id);
     wordsLine.value.push(word);
   }
+}
+
+function backToHome(){
+  navigateTo("/home");
 }
 
 function finishInteraction(){
