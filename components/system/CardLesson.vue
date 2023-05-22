@@ -1,54 +1,46 @@
 <template>
-  <div class="max-w-sm rounded overflow-hidden shadow-lg">
-    <img class="w-full h-48" :srcset="lesson.urlCover" :alt="lesson.title">
+  <li class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
+    <div class="flex w-full items-center justify-between space-x-6 p-6">
+      <div class="flex-1 truncate">
+        <div class="flex items-center space-x-3">
+          <h3 class="truncate text-sm font-medium text-gray-900">{{ capitalizeFirstLetter(lesson.title) }}</h3>
 
-    <div class="px-6 py-4">
-      <div class="font-bold text-xl mb-2 h-8 overflow-hidden">{{ capitalizeFirstLetter(lesson.title) }}</div>
-      <p class="text-gray-700 text-base h-20 overflow-auto">
-        {{ capitalizeFirstLetter(lesson.desc) }}
-      </p>
-    </div>
-
-    <hr>
-
-    <div class="px-6 pt-4 pb-2">
-      <div class="h-10 overflow-auto">
-        <span
-          v-for="tag in tags"
-          class="inline-block bg-primary-400 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2">
-          #{{ tag }}
-        </span>
-      </div>
-
-      <hr>
-
-      <div>
-        <div class="float-left p-2">
-          <NuxtLink :to="`/profile/${lesson.createUserId}`" class="leading-6 text-primary-400 hover:text-primary-700">
-            Jonathan Reinink
-          </NuxtLink>
-          {{ ' - ' }}
-          <span class="text-gray-600 leading-none">Aug 18</span>
+          <span v-for="tag in tags" class="inline-flex flex-shrink-0 items-center rounded-full bg-primary-400 px-1.5 py-0.5 text-xs font-medium text-white ring-1 ring-inset ring-primary-600/20">#{{ tag }}</span>
         </div>
-
-        <div class="float-right">
-          <Button @click="startLesson">Estudar</Button>
+        <p class="mt-1 truncate text-sm text-gray-500">{{ capitalizeFirstLetter(lesson.desc) }}</p>
+      </div>
+      <img class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300" :src="`${images[lesson.langId]}`" alt="lang-flag" />
+    </div>
+    <div>
+      <div class="-mt-px flex divide-x divide-gray-200">
+        <div class="flex w-0 flex-1 cursor-pointer">
+          <a @click="startLesson" class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900">
+            <AcademicCapIcon class="h-5 w-5 text-primary-400" aria-hidden="true" />
+              Lesson
+          </a>
+        </div>
+        <div class="-ml-px flex w-0 flex-1 cursor-pointer">
+          <a class="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900">
+            <PlusIcon class="h-5 w-5 text-primary-400 " aria-hidden="true" />
+              Follow
+          </a>
         </div>
       </div>
-
-      <!-- <div class="mt-1 flex items-center">
-        <img class="w-10 h-10 rounded-full mr-4" srcset="https://cdn.pixabay.com/photo/2016/05/03/16/10/morning-1369446_960_720.jpg" alt="Avatar of Jonathan Reinink">
-        <div class="text-sm">
-          <p class="text-gray-900 leading-none">Jonathan Reinink</p>
-          <p class="text-gray-600">Aug 18</p>
-        </div>
-      </div> -->
     </div>
-
-  </div>
+  </li>
 </template>
 
 <script lang="ts" setup>
+import { EnvelopeIcon, PhoneIcon, AcademicCapIcon, PlusIcon, } from "@heroicons/vue/20/solid";
+
+import { filename, } from "pathe/utils";
+
+const glob = import.meta.glob("~/assets/images/flags/*.jpg", { eager: true });
+const images = Object.fromEntries(
+  //@ts-ignore
+  Object.entries(glob).map(([key, value]) => [filename(key), value.default])
+);
+
 const { setLesson } = useUserStore();
 
 const props = defineProps<{
