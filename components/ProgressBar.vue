@@ -1,6 +1,6 @@
 <template>
   <div class="h-5 w-full bg-neutral-200 dark:bg-gray-300">
-    <div class="h-5 bg-primary-500" :style="{width: `${progress}%`}"></div>
+    <div class="h-5 bg-primary-500 rounded-md" :style="{width: `${progress}%`, transition: '2s'}"></div>
   </div>
 </template>
 
