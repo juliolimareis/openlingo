@@ -9,6 +9,11 @@ export default defineNuxtConfig({
     },
   },
 
+  sourcemap: {
+    server: true,
+    client: true
+  },
+
   imports: {
     dirs: [
       // Scan top-level modules
