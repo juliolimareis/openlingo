@@ -1,12 +1,16 @@
 <template>
-  <div id="interaction-player" class="absolute top-[-500px] invisible z-[-10]" aria-hidden></div>
-  <div class="mt-10">
+  <div class="mt-3">
+    <div id="interaction-player" class="absolute top-[-500px] invisible z-[-10]" aria-hidden></div>
 
-    <div v-if="interactionType.type.includes('audio') && !interactionType.isInverse && interactionType.interaction.videoId">
+    <div v-if="interactionType.type.includes('audio')
+      && !interactionType.isInverse
+      && interactionType.interaction.videoId
+    ">
+
       <div v-if="!player.$state.isLoader">
         <span class="flex justify-center">
-          <SpeakerWaveIcon @click="play()" :class="`text-white p-4 border-b-4 border-primary-800 rounded-xl cursor-pointer w-24 h-24 mr-6 ${playAudio.isPlay && playAudio.type === 'normal' ? 'shake' : ''}  ${playAudio.isPlay && playAudio.type !== 'normal' ? 'bg-primary-200 border-primary-200' : 'bg-primary-500'}`" />
-          <TruckIcon @click="play(0.5)" :class="`text-white p-2 border-b-4 border-primary-800 rounded-xl cursor-pointer w-12 h-12 mt-12 ${playAudio.isPlay && playAudio.type === 'slow' ? 'shake' : ''} ${playAudio.isPlay && playAudio.type !== 'slow' ? 'bg-primary-200 border-primary-200' : 'bg-primary-500'}`" />
+          <SpeakerWaveIcon @click="play()" :class="`text-white p-4 border-b-4 border-primary-800 rounded-xl cursor-pointer w-24 h-24 mr-6 ${playAudio.isPlay && playAudio.type === 'normal' ? 'shake' : ''}  ${playAudio.isPlay && playAudio.type !== 'normal' ? 'bg-primary-200 border-primary-200 border-b-primary-200' : 'bg-primary-500'}`" />
+          <TruckIcon @click="play(0.5)" :class="`text-white p-2 border-b-4 border-primary-800 rounded-xl cursor-pointer w-12 h-12 mt-12 ${playAudio.isPlay && playAudio.type === 'slow' ? 'shake' : ''} ${playAudio.isPlay && playAudio.type !== 'slow' ? 'bg-primary-200 border-primary-200 border-b-primary-200' : 'bg-primary-500'}`" />
         </span>
 
         <div v-if="interactionType.isAcceleratedAudio" class="text-center mt-2">
@@ -18,7 +22,9 @@
     </div>
 
     <div v-if="interactionType.type.includes('learn') || interactionType.isInverse" class="mt-5">
-      <Word class="m-auto" :word="interactionType.phrase" />
+      <div class="m-auto rounded-xl p-2 w-fit text-gray-700 border-b-2 border-gray-300 shadow-md">
+        {{ interactionType.phrase }}
+      </div>
     </div>
 
   </div>
@@ -59,32 +65,28 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerReady(){
-  player.configurePlayList();
-
-  // event.target.loadPlaylist({
-  //   playlist: videoIds.value,
-  //   listType: "user_uploads",
-  //   startSeconds: props.interactions[$state.index].vInit,
-  //   suggestedQuality: "small"
-  // });
-
-  // event.target.stopVideo();
-  // setLoader(false);
+  player.configurePlayList(props.interactionType?.interaction?.vInit ?? 0);
 }
 
 function onPlayerStateChange(event: any){
-  // console.log(YT.PlayerState);
   // @ts-ignore
-  if (!player.$state.isLoader && event.data == YT.PlayerState.PLAYING) {
+  if (event.data == YT.PlayerState.PLAYING) {
+    if(!playAudio.isPlay){
+      player.$state.player.stopVideo();
+    }
+
     const timeSlow = slowRateValue.value === 0.5 ? 2 : 1;
 
     setTimeout(() => {
       player.$state.player.pauseVideo();
       playAudio.isPlay = false;
-    }, props.interactionType.interaction.vEnd * 60 * timeSlow
-    );
-  }else{
+    }, (props.interactionType.interaction.vEnd - props.interactionType.interaction.vInit) * 1000 * timeSlow);
+  }
+  // @ts-ignore
+  else if (event.data == YT.PlayerState.BUFFERING) {
     player.setLoader(false);
+    player.$state.player.seekTo(props.interactionType.interaction.vInit);
+    player.$state.player.playVideo();
   }
 }
 
@@ -94,6 +96,7 @@ function play(playbackRate?: PlayVideo["playbackRate"]){
   slowRateValue.value = playbackRate ?? 1;
 
   playAudio.isPlay = true;
+  player.setLoader(true);
   playAudio.type = slowRateValue.value === 1 ? "normal" : "slow";
 
   if(props.interactionType.isAcceleratedAudio){
@@ -101,7 +104,12 @@ function play(playbackRate?: PlayVideo["playbackRate"]){
     playAudio.type = slowRateValue.value === 1.5 ? "normal" : "slow";
   }
 
-  player.playVideo(props.interactionType.interaction.vInit, slowRateValue.value);
+  if(props.interactionType.videoIndex !== undefined){
+    player.playVideo(
+      props.interactionType.videoIndex,
+      slowRateValue.value
+    );
+  }
 }
 
 onMounted(() => {

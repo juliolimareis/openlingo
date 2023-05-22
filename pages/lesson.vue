@@ -114,9 +114,15 @@ function backToHome(){
 
 function finishInteraction(){
   if(interactionTypeSelected.value){
-    if(interactionTypeSelected.value.interaction.phrases.includes(wordsLine.value.map(w => w.word).join(" "))){
+    const answer = wordsLine.value.map(w => w.word).join(" ");
+
+    if(
+      interactionTypeSelected.value.interaction.phrases.includes(answer)
+      || interactionTypeSelected.value.interaction.translations.includes(answer)
+    ){
       isCorrect.value = true;
     }else{
+      interactionTypeSelected.value.answer = answer;
       isCorrect.value = false;
     }
 
@@ -133,10 +139,6 @@ function nextInteraction(){
     isCorrect.value = undefined;
     wordsLine.value = [];
     handleWordsOptions();
-
-    if(interactionTypeSelected.value.interaction.videoId){
-      player.setIndex(interactionIndex.value);
-    }
   }else{
     isFinish.value = true;
     navigateTo("/score", { replace: true });
@@ -151,28 +153,26 @@ function handleWordsOptions() {
     }));
   }
 
-  const amountAddOptions = randomInt(4);
+  const amountAddOptions = randomInt(6);
   let indexWordsOptions = wordsOptions.value.length + 1;
+
+  const wordsSet = new Set<string>();
 
   if(interactionTypeSelected.value?.isInverse){
     for(let i = 0; i < amountAddOptions; i++){
-      wordsOptions.value.push({
-        id: indexWordsOptions,
-        word: allTranslationsSplit.value[randomInt(allTranslationsSplit.value.length)]
-      });
-
-      indexWordsOptions++;
-    }
+      wordsSet.add(allPhrasesSplit.value[randomInt(allPhrasesSplit.value.length)]);
+    };
   }else{
     for(let i = 0; i < amountAddOptions; i++){
-      wordsOptions.value.push({
-        id: indexWordsOptions,
-        word: allPhrasesSplit.value[randomInt(allPhrasesSplit.value.length)]
-      });
-
-      indexWordsOptions++;
-    }
+      wordsSet.add(allTranslationsSplit.value[randomInt(allTranslationsSplit.value.length)]);
+    };
   }
+
+  Array.from(wordsSet).forEach((w, i) =>
+    wordsOptions.value.push({
+      id: Number(i + indexWordsOptions + 1),
+      word: w
+    }));
 
   wordsOptions.value = shuffleArray(wordsOptions.value);
 }
@@ -186,16 +186,16 @@ function handleInteractionType(){
   let isAcceleratedAudio = false;
 
   interactions.value.forEach(interaction => {
-    player.addVideoId(interaction?.videoId ?? "");
     type = types[randomInt(types.length)];
     interaction.phrases.map(p => p.split(" ").forEach(w => allPhrasesSplit.value.push(w)));
     interaction.translations.map(p => p.split(" ").forEach(w => allTranslationsSplit.value.push(w)));
 
     //randomiza onde vai aparecer a tradução.
     // isInverse = a tradução vai aparecer acima.
+    // if(1){
     if(randomInt(2)){
       phrase = interaction.phrases[randomInt(interaction.phrases.length)];
-      translation = interaction.phrases[randomInt(interaction.translations.length)];
+      translation = interaction.translations[randomInt(interaction.translations.length)];
       isInverse = false;
     }else{
       translation = interaction.phrases[randomInt(interaction.phrases.length)];
@@ -219,10 +219,20 @@ function handleInteractionType(){
   });
 
   interactionsType.value = shuffleArray(interactionsType.value);
-  interactionTypeSelected.value = interactionsType.value[0];
+
+  interactionsType.value.forEach((inter, i) => {
+    if(inter.interaction?.videoId){
+      player.addVideoId(inter?.interaction.videoId);
+      interactionsType.value[i].videoIndex = i;
+    }
+  });
+
+  interactionTypeSelected.value = { ...interactionsType.value[0] };
 }
 
 onMounted(() => {
+  score.clear();
+  player.clearIds();
   interactions.value = $state?.lesson?.interactions ?? [];
   progressPeace.value = 100 / interactions.value.length;
   handleInteractionType();
