@@ -6,5 +6,8 @@ export const useScoreStore = defineStore("score", {
     addInteractionsType(interactionType: InteractionType){
       this.interactionsType.push(interactionType);
     },
+    clear(){
+      this.interactionsType = [];
+    }
   }
 });
