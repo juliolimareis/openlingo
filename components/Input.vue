@@ -4,8 +4,9 @@
     <input
       :type="type"
       :placeholder="placeholder"
-      class="
+      :class="`
         block
+        w-full
         rounded-md
         border-0
         py-1.5
@@ -17,12 +18,18 @@
         placeholder:text-gray-400
         focus:ring-2
         focus:ring-inset
-        focus:ring-primary
-        sm:text-sm sm:leading-6
-      "
+        focus:ring-primary-600
+        sm:text-sm
+        sm:leading-6
+        ${isError && 'border-2 focus:ring-red-500 border-red-500 focus:border-red-500'}
+        ${isError && 'border-2 focus:ring-[#42d392] border-[#42d392]'}
+      `"
       :value="value"
       @input="onChange($event)"
+      @blur="onBlur($event)"
     >
+
+    <p v-if="showHelperText" class="text-sm mt-1" :class="{'text-red-500': isError}">{{ helperText }}</p>
   </div>
 </template>
 
@@ -48,7 +55,23 @@ const props = defineProps({
     type: String,
     default: ""
   },
+  isError: {
+    type: Boolean,
+    default: false
+  },
+  showHelperText: {
+    type: Boolean,
+    default: true
+  },
+  helperText: {
+    type: String,
+    default: ""
+  },
   onChange:{
+    type: Function,
+    default: (event: any) => {}
+  },
+  onBlur:{
     type: Function,
     default: (event: any) => {}
   }
@@ -61,7 +84,11 @@ onMounted(() => {
 function onChange(event: any){
   _value.value = event.target.value;
 
-  if(props.onChange) props?.onChange(event.target.value);
+  if(props.onChange) props?.onChange(event.target.value, event);
+}
+
+function onBlur(event: any){
+  if(props.onChange) props?.onBlur(event.target.value, event);
 }
 
 </script>

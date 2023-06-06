@@ -21,16 +21,34 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    apiPublicRouters: { "/api/v1/auth": ["post"], "/api/v1/user":["post"] },
     public: {
-      api: process.env.API_MAIN,
-      apiAddress: process.env.API_ADDRESS,
-      apiAuthentication: process.env.API_AUTHENTICATION,
+      publicPages: ["", "/", "/login", "/register"],
+      // api: process.env.API_MAIN,
+      // apiAddress: process.env.API_ADDRESS,
+      // apiAuthentication: process.env.API_AUTHENTICATION,
     },
   },
 
   modules:[
     "@nuxtjs/tailwindcss",
+    "@nuxtjs/i18n",
+    "@pinia/nuxt"
     // "@nuxtjs/abifa-ui"
   ],
+
+  // pinia: {
+  //   autoImports: [
+  //     // automatically imports `defineStore`
+  //     "defineStore", // import { defineStore } from 'pinia'
+  //     ["defineStore", "definePiniaStore"], // import { defineStore as definePiniaStore } from 'pinia'
+  //   ],
+  // },
+
+  components: [
+    "components",
+    "components/icons",
+    "components/system"
+  ]
 
 });
