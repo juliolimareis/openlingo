@@ -59,8 +59,8 @@ const total = score.interactionsType.length;
 const corrects = score.interactionsType.filter(i => i.isHit).length;
 const errors = score.interactionsType.filter(i => !i.isHit).length;
 
-const statsCorrect = (100 / total) * corrects;
-const statsError = (100 / total) * errors;
+const statsCorrect = Math.floor((100 / total) * corrects);
+const statsError = Math.floor((100 / total) * errors);
 
 const stats = ref([
   { id: 1, name: "Correct", value: `${corrects}/${total}` },

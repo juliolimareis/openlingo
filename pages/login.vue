@@ -96,24 +96,30 @@ const rules = computed(() => ({
 
 const v$ = useVuelidate(rules, formData);
 
-function onSend(){
+async function onSend(){
   v$.value.$validate();
 
   if (v$.value.$error) return;
 
   isLoading.value = true;
 
-  auth(formData)
+  let isSuccess = false;
+
+  await auth(formData)
     .then(({ data: { token, user } }) => {
       setToken(token);
       setUser(user);
-      navigateTo("/home", { replace: true });
+
+      isSuccess = true;
     })
     .catch((err) => {
       statusResponse.value = err?.response?.status ?? 0;
     }).finally(() => {
       isLoading.value = false;
     });
+
+  if(isSuccess)
+    navigateTo("/home", { replace: true });
 }
 
 </script>

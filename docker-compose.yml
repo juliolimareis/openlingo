@@ -1,7 +1,14 @@
 version: "3.7"
 
 services: 
-  # openligo-front:
+  # openligo-dev:
+  #   build: .
+  #   ports:
+  #     - 3000:3000
+    # volumes:
+    #   - ./:/app
+    # command: npm run dev
+  # openligo:
   #   build: .
   #   ports:
   #     - 3000:3000

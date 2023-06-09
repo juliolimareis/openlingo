@@ -1,0 +1,45 @@
+[{
+  "id": 1,
+  "lang": "",
+  "nativeLang": "",
+  "createUserId": 2,
+  "isShare": 0,
+  "createdAt": "",
+  "desc": "",
+  "title": "",
+  "lesson": {
+  "interactions": [
+    {
+      "phrases": ["本当ですか", "Hontōdesuka"],
+      "translations": ["Sério?"],
+      "urlImage": "",
+      "vInit": 22.289,
+      "vEnd": 23.289,
+      "about": "Confirmação em uma conversa",
+      "tags": "conversa",
+      "videoId": "qANpuNm9Dkg"
+    },
+    {
+      "phrases": ["なるほど", "Naruhodo"],
+      "translations": ["Entendi"],
+      "urlImage": "",
+      "vInit": 191.239,
+      "vEnd": 192.980,
+      "about": "",
+      "tags": "conversa",
+      "videoId": "nrWXk2Ws3zM"
+    },
+    {
+      "phrases": ["ちょっと一緒に歩いてほしい", "Chotto issho ni aruite hoshī"],
+      "translations": ["Eu quero que você caminhe comigo"],
+      "urlImage": "",
+      "vInit": 303.960,
+      "vEnd": 307.500,
+      "about": "",
+      "tags": "conversa",
+      "videoId": "nrWXk2Ws3zM"
+    }
+  ]
+}
+}]
+
